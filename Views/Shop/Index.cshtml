@@ -1,0 +1,87 @@
+@model ShopViewModel
+@{
+    ViewData["Title"] = Model.CategoryName ?? "Sản phẩm";
+}
+
+<section class="shop_grid_area section_padding_100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-4 col-lg-3">
+                <div class="shop_sidebar_area">
+
+                    <!-- Danh mục -->
+                    <div class="widget catagory mb-50">
+                        <div class="nav-side-menu">
+                            <h6 class="mb-0">Danh mục</h6>
+                            <div class="menu-list">
+                                @await Component.InvokeAsync("CategoryMenu", new { menuId = "menu-content2" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tìm kiếm -->
+                    <div class="widget mb-50">
+                        <h6 class="widget-title mb-30">Tìm kiếm</h6>
+                        <div class="widget-desc">
+                            <form asp-controller="Shop" asp-action="Index" method="get">
+                                @if (Model.CategoryId.HasValue)
+                                {
+                                    <input type="hidden" name="categoryId" value="@Model.CategoryId" />
+                                }
+                                <input type="text" name="q" value="@Model.Query" class="form-control mb-2" placeholder="Nhập tên sản phẩm..." />
+                                <button type="submit" class="btn karl-btn btn-block">Tìm</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Gợi ý -->
+                    <div class="widget recommended">
+                        <h6 class="widget-title mb-30">Sản phẩm mới</h6>
+                        <div class="widget-desc">
+                            @foreach (var r in Model.Recommended)
+                            {
+                                <div class="single-recommended-product d-flex mb-30">
+                                    <div class="single-recommended-thumb mr-3">
+                                        <a asp-action="Details" asp-route-id="@r.Id"><img src="@Url.Content(ViewHelpers.ImagePath(r.ImageUrl))" alt="@r.Name"></a>
+                                    </div>
+                                    <div class="single-recommended-desc">
+                                        <h6><a asp-action="Details" asp-route-id="@r.Id">@r.Name</a></h6>
+                                        <p>@r.Price.ToVnd()</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-8 col-lg-9">
+                <div class="shop_grid_product_area">
+                    @if (Model.CategoryName != null || !string.IsNullOrEmpty(Model.Query))
+                    {
+                        <p class="mb-4">
+                            Tìm thấy <strong>@Model.Paging.TotalItems</strong> sản phẩm
+                            @if (Model.CategoryName != null) { <text>trong danh mục <strong>@Model.CategoryName</strong></text> }
+                            @if (!string.IsNullOrEmpty(Model.Query)) { <text> với từ khóa "<strong>@Model.Query</strong>"</text> }
+                        </p>
+                    }
+                    <div class="row">
+                        @foreach (var p in Model.Products)
+                        {
+                            <partial name="_ProductCard" model="p" />
+                        }
+                    </div>
+                    @if (!Model.Products.Any())
+                    {
+                        <div class="text-center py-5">
+                            <p>Không có sản phẩm nào phù hợp.</p>
+                            <a asp-action="Index" class="btn karl-btn mt-3">Xem tất cả sản phẩm</a>
+                        </div>
+                    }
+
+                    <partial name="_Pager" model="Model.Paging" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

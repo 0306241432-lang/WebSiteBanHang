@@ -1,0 +1,34 @@
+@model Product
+@{
+    ViewData["Title"] = "Chi tiết sản phẩm";
+    int ordered = ViewBag.OrderedQuantity;
+}
+
+<p>
+    <a asp-action="Index" class="btn btn-default"><i class="fa fa-arrow-left"></i> Danh sách sản phẩm</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><i class="fa fa-pencil"></i> Sửa</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger"><i class="fa fa-trash-o"></i> Xóa</a>
+    <a asp-area="" asp-controller="Shop" asp-action="Details" asp-route-id="@Model.Id" target="_blank" class="btn btn-info"><i class="fa fa-external-link"></i> Xem trên website</a>
+</p>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="@Url.Content(ViewHelpers.ImagePath(Model.ImageUrl))" class="preview-img" style="max-width:100%" alt="@Model.Name" />
+            </div>
+            <div class="col-md-8">
+                <h3 style="margin-top:0">@Model.Name</h3>
+                <dl class="dl-horizontal">
+                    <dt>Mã sản phẩm</dt><dd>@Model.Id</dd>
+                    <dt>Danh mục</dt><dd>@Model.Category?.Name</dd>
+                    <dt>Giá bán</dt><dd>@Model.Price.ToVnd()</dd>
+                    <dt>Ngày tạo</dt><dd>@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</dd>
+                    <dt>Đã bán</dt><dd>@ordered sản phẩm (tính trên tất cả đơn hàng)</dd>
+                    <dt>Tên file ảnh</dt><dd>@(Model.ImageUrl ?? "—")</dd>
+                    <dt>Mô tả</dt><dd style="white-space:pre-line">@(string.IsNullOrWhiteSpace(Model.Description) ? "—" : Model.Description)</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

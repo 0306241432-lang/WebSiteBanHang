@@ -1,0 +1,18 @@
+@model Category
+@{
+    ViewData["Title"] = "Thêm danh mục";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form asp-action="Create" method="post">
+                    <partial name="_Form" model="Model" />
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Lưu</button>
+                    <a asp-action="Index" class="btn btn-default">Quay lại</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

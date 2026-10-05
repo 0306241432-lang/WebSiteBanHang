@@ -1,8 +1,167 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@model HomeViewModel
+@{
+    ViewData["Title"] = "Trang chủ";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- ****** Welcome Slides Area Start ****** -->
+<section class="welcome_area">
+    <div class="welcome_slides owl-carousel">
+        <div class="single_slide height-800 bg-img background-overlay" style="background-image: url(@Url.Content("~/client/img/bg-img/bg-1.jpg"));">
+            <div class="container h-100">
+                <div class="row h-100 align-items-center">
+                    <div class="col-12">
+                        <div class="welcome_slide_text">
+                            <h6 data-animation="bounceInDown" data-delay="0" data-duration="500ms">* Hôm nay miễn phí vận chuyển</h6>
+                            <h2 data-animation="fadeInUp" data-delay="500ms" data-duration="500ms">Xu hướng thời trang</h2>
+                            <a asp-controller="Shop" asp-action="Index" class="btn karl-btn" data-animation="fadeInUp" data-delay="1s" data-duration="500ms">Mua ngay</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="single_slide height-800 bg-img background-overlay" style="background-image: url(@Url.Content("~/client/img/bg-img/bg-4.jpg"));">
+            <div class="container h-100">
+                <div class="row h-100 align-items-center">
+                    <div class="col-12">
+                        <div class="welcome_slide_text">
+                            <h6 data-animation="fadeInDown" data-delay="0" data-duration="500ms">* Hôm nay miễn phí vận chuyển</h6>
+                            <h2 data-animation="fadeInUp" data-delay="500ms" data-duration="500ms">Bộ sưu tập mới</h2>
+                            <a asp-controller="Shop" asp-action="Index" class="btn karl-btn" data-animation="fadeInLeftBig" data-delay="1s" data-duration="500ms">Xem bộ sưu tập</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="single_slide height-800 bg-img background-overlay" style="background-image: url(@Url.Content("~/client/img/bg-img/bg-2.jpg"));">
+            <div class="container h-100">
+                <div class="row h-100 align-items-center">
+                    <div class="col-12">
+                        <div class="welcome_slide_text">
+                            <h6 data-animation="fadeInDown" data-delay="0" data-duration="500ms">* Hôm nay miễn phí vận chuyển</h6>
+                            <h2 data-animation="bounceInDown" data-delay="500ms" data-duration="500ms">Thời trang nữ</h2>
+                            <a asp-controller="Shop" asp-action="Index" class="btn karl-btn" data-animation="fadeInRightBig" data-delay="1s" data-duration="500ms">Xem bộ sưu tập</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ****** Welcome Slides Area End ****** -->
+
+<!-- ****** Top Catagory Area Start ****** -->
+<section class="top_catagory_area d-md-flex clearfix">
+    <div class="single_catagory_area d-flex align-items-center bg-img" style="background-image: url(@Url.Content("~/client/img/bg-img/bg-2.jpg"));">
+        <div class="catagory-content">
+            <h6>Phụ kiện &amp; thời trang</h6>
+            <h2>Giảm đến 30%</h2>
+            <a asp-controller="Shop" asp-action="Index" class="btn karl-btn">MUA NGAY</a>
+        </div>
+    </div>
+    <div class="single_catagory_area d-flex align-items-center bg-img" style="background-image: url(@Url.Content("~/client/img/bg-img/bg-3.jpg"));">
+        <div class="catagory-content">
+            <h6>Mẫu mới nhất của mùa này</h6>
+            <h2>Thiết kế độc đáo</h2>
+            <a asp-controller="Shop" asp-action="Index" class="btn karl-btn">MUA NGAY</a>
+        </div>
+    </div>
+</section>
+<!-- ****** Top Catagory Area End ****** -->
+
+<!-- ****** New Arrivals Area Start ****** -->
+<section class="new_arrivals_area section_padding_100_0 clearfix">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section_heading text-center">
+                    <h2>Sản phẩm mới</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="karl-projects-menu mb-100">
+        <div class="text-center portfolio-menu">
+            <a asp-controller="Shop" asp-action="Index" class="btn active">TẤT CẢ</a>
+            @foreach (var c in Model.Categories)
+            {
+                <a asp-controller="Shop" asp-action="Index" asp-route-categoryId="@c.Id" class="btn">@c.Name.ToUpper()</a>
+            }
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row karl-new-arrivals">
+            @foreach (var p in Model.NewProducts)
+            {
+                <partial name="_ProductCard" model="p" />
+            }
+            @if (!Model.NewProducts.Any())
+            {
+                <div class="col-12 text-center"><p>Chưa có sản phẩm nào.</p></div>
+            }
+        </div>
+    </div>
+</section>
+<!-- ****** New Arrivals Area End ****** -->
+
+@if (Model.Featured != null)
+{
+    <!-- ****** Offer Area Start ****** -->
+    <section class="offer_area height-700 section_padding_100 bg-img" style="background-image: url(@Url.Content("~/client/img/bg-img/bg-5.jpg"));">
+        <div class="container h-100">
+            <div class="row h-100 align-items-end justify-content-end">
+                <div class="col-12 col-md-8 col-lg-6">
+                    <div class="offer-content-area">
+                        <h2>@Model.Featured.Name <span class="karl-level">Hot</span></h2>
+                        <p>* Miễn phí vận chuyển cho đơn hàng đầu tiên</p>
+                        <div class="offer-product-price">
+                            <h3>@Model.Featured.Price.ToVnd()</h3>
+                        </div>
+                        <a asp-controller="Shop" asp-action="Details" asp-route-id="@Model.Featured.Id" class="btn karl-btn mt-30">Xem ngay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ****** Offer Area End ****** -->
+}
+
+<!-- ****** Testimonials Area Start ****** -->
+<section class="karl-testimonials-area section_padding_100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section_heading text-center">
+                    <h2>Khách hàng nói gì</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8">
+                <div class="karl-testimonials-slides owl-carousel">
+                    @for (var i = 0; i < 3; i++)
+                    {
+                        <div class="single-testimonial-area text-center">
+                            <span class="quote">"</span>
+                            <h6>Sản phẩm đúng như hình, chất vải đẹp và giao hàng nhanh. Mình rất hài lòng và sẽ tiếp tục ủng hộ shop trong những lần mua sắm tới.</h6>
+                            <div class="testimonial-info d-flex align-items-center justify-content-center">
+                                <div class="tes-thumbnail">
+                                    <img src="~/client/img/bg-img/tes-1.jpg" alt="">
+                                </div>
+                                <div class="testi-data">
+                                    <p>Nguyễn Thu Hà</p>
+                                    <span>Khách hàng, TP. Hồ Chí Minh</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ****** Testimonials Area End ****** -->

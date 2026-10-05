@@ -1,0 +1,16 @@
+@model List<Category>
+@{
+    string menuId = ViewBag.MenuId;
+    int activeId = ViewBag.ActiveId;
+}
+<ul id="@menuId" class="menu-content collapse out">
+    <li class="@(activeId == 0 ? "active" : "collapsed")">
+        <a asp-controller="Shop" asp-action="Index">Tất cả sản phẩm</a>
+    </li>
+    @foreach (var c in Model)
+    {
+        <li class="@(activeId == c.Id ? "active" : "collapsed")">
+            <a asp-controller="Shop" asp-action="Index" asp-route-categoryId="@c.Id">@c.Name</a>
+        </li>
+    }
+</ul>

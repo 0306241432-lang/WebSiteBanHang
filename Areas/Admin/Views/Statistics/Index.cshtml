@@ -1,0 +1,122 @@
+@model StatisticsViewModel
+@{
+    ViewData["Title"] = "Thống kê doanh thu";
+}
+
+@section Styles {
+    <link href="~/admin/css/morris.css" rel="stylesheet">
+}
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i> Doanh thu 6 tháng gần nhất (chỉ tính đơn đã hoàn thành)
+            </div>
+            <div class="panel-body">
+                <div id="revenue-chart" style="height: 300px;"></div>
+            </div>
+            <div class="panel-footer">
+                Tổng doanh thu từ trước đến nay: <strong>@Model.TotalRevenue.ToVnd()</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-pie-chart fa-fw"></i> Đơn hàng theo trạng thái
+            </div>
+            <div class="panel-body">
+                @if (Model.TotalOrders == 0)
+                {
+                    <p class="text-muted">Chưa có đơn hàng nào.</p>
+                }
+                else
+                {
+                    <div id="status-chart" style="height: 300px;"></div>
+                }
+            </div>
+            <div class="panel-footer">
+                Tổng số đơn hàng: <strong>@Model.TotalOrders</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-trophy fa-fw"></i> Top 5 sản phẩm bán chạy (không tính đơn đã hủy)
+            </div>
+            <div class="panel-body">
+                @if (!Model.TopProducts.Any())
+                {
+                    <p class="text-muted">Chưa có dữ liệu bán hàng.</p>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:50px">#</th>
+                                    <th>Sản phẩm</th>
+                                    <th class="text-right" style="width:130px">Số lượng bán</th>
+                                    <th class="text-right" style="width:180px">Doanh số</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var rank = 1; }
+                                @foreach (var p in Model.TopProducts)
+                                {
+                                    <tr>
+                                        <td>@(rank++)</td>
+                                        <td>@p.Name</td>
+                                        <td class="text-right">@p.Quantity</td>
+                                        <td class="text-right">@p.Revenue.ToVnd()</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/admin/js/raphael.min.js"></script>
+    <script src="~/admin/js/morris.min.js"></script>
+    <script>
+        var months = @Json.Serialize(Model.Months);
+        var statuses = @Json.Serialize(Model.Statuses);
+
+        // Biểu đồ cột: doanh thu theo tháng
+        Morris.Bar({
+            element: 'revenue-chart',
+            data: months,
+            xkey: 'label',
+            ykeys: ['revenue'],
+            labels: ['Doanh thu (đ)'],
+            barColors: ['#337ab7'],
+            hideHover: 'auto',
+            resize: true,
+            yLabelFormat: function (y) { return y.toLocaleString('vi-VN'); }
+        });
+
+        // Biểu đồ tròn: số đơn theo trạng thái (màu theo thứ tự:
+        // Chờ xử lý, Đang giao, Hoàn thành, Đã hủy)
+        if (document.getElementById('status-chart')) {
+            Morris.Donut({
+                element: 'status-chart',
+                data: statuses,
+                colors: ['#f0ad4e', '#5bc0de', '#5cb85c', '#d9534f'],
+                formatter: function (y) { return y + ' đơn'; },
+                resize: true
+            });
+        }
+    </script>
+}

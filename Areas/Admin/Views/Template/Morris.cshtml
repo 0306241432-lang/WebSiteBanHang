@@ -1,0 +1,84 @@
+@{
+    ViewData["Title"] = "Morris.js Charts";
+}
+
+@section Styles {
+    <link href="~/admin/css/morris.css" rel="stylesheet">
+}
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">Area Chart Example</div>
+            <div class="panel-body">
+                <div id="morris-area-chart" style="height: 300px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">Donut Chart Example</div>
+            <div class="panel-body">
+                <div id="morris-donut-chart" style="height: 300px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Bar Chart Example</div>
+            <div class="panel-body">
+                <div id="morris-bar-chart" style="height: 300px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/admin/js/raphael.min.js"></script>
+    <script src="~/admin/js/morris.min.js"></script>
+    <script>
+        Morris.Area({
+            element: 'morris-area-chart',
+            data: [
+                { period: '2026 Q1', iphone: 2666, ipad: null, itouch: 2647 },
+                { period: '2026 Q2', iphone: 2778, ipad: 2294, itouch: 2441 },
+                { period: '2026 Q3', iphone: 4912, ipad: 1969, itouch: 2501 },
+                { period: '2026 Q4', iphone: 3767, ipad: 3597, itouch: 5689 }
+            ],
+            xkey: 'period',
+            ykeys: ['iphone', 'ipad', 'itouch'],
+            labels: ['iPhone', 'iPad', 'iPod Touch'],
+            pointSize: 2,
+            hideHover: 'auto',
+            resize: true
+        });
+
+        Morris.Donut({
+            element: 'morris-donut-chart',
+            data: [
+                { label: 'Download Sales', value: 12 },
+                { label: 'In-Store Sales', value: 30 },
+                { label: 'Mail-Order Sales', value: 20 }
+            ],
+            resize: true
+        });
+
+        Morris.Bar({
+            element: 'morris-bar-chart',
+            data: [
+                { y: '2023', a: 100, b: 90 },
+                { y: '2024', a: 75, b: 65 },
+                { y: '2025', a: 50, b: 40 },
+                { y: '2026', a: 75, b: 65 }
+            ],
+            xkey: 'y',
+            ykeys: ['a', 'b'],
+            labels: ['Series A', 'Series B'],
+            hideHover: 'auto',
+            resize: true
+        });
+    </script>
+}

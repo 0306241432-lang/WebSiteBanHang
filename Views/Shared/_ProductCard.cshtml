@@ -1,0 +1,27 @@
+@model Product
+@{
+    var returnUrl = $"{Context.Request.Path}{Context.Request.QueryString}";
+}
+<div class="col-12 col-sm-6 col-lg-4 single_gallery_item">
+    <!-- Product Image -->
+    <div class="product-img">
+        <a asp-controller="Shop" asp-action="Details" asp-route-id="@Model.Id">
+            <img src="@Url.Content(ViewHelpers.ImagePath(Model.ImageUrl))" alt="@Model.Name">
+        </a>
+        <div class="product-quicview">
+            <a asp-controller="Shop" asp-action="Details" asp-route-id="@Model.Id" title="Xem chi tiết"><i class="ti-plus"></i></a>
+        </div>
+    </div>
+    <!-- Product Description -->
+    <div class="product-description">
+        <h4 class="product-price">@Model.Price.ToVnd()</h4>
+        <p><a asp-controller="Shop" asp-action="Details" asp-route-id="@Model.Id">@Model.Name</a></p>
+        <!-- Add to Cart -->
+        <form asp-controller="Cart" asp-action="Add" method="post">
+            <input type="hidden" name="productId" value="@Model.Id" />
+            <input type="hidden" name="quantity" value="1" />
+            <input type="hidden" name="returnUrl" value="@returnUrl" />
+            <button type="submit" class="add-to-cart-btn">THÊM VÀO GIỎ</button>
+        </form>
+    </div>
+</div>

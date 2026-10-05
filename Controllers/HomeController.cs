@@ -1,24 +1,34 @@
-using System.Diagnostics;
+using Duanbanhang.Data;
+using Duanbanhang.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using WebBanHang.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace WebBanHang.Controllers;
-
-public class HomeController : Controller
+namespace Duanbanhang.Controllers
 {
-    public IActionResult Index()
+    public class HomeController : Controller
     {
-        return View();
-    }
+        private readonly AppDbContext _db;
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+        public HomeController(AppDbContext db) => _db = db;
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        public async Task<IActionResult> Index()
+        {
+            var newest = await _db.Products.AsNoTracking()
+                .Include(p => p.Category)
+                .OrderByDescending(p => p.CreatedAt).ThenByDescending(p => p.Id)
+                .Take(6)
+                .ToListAsync();
+
+            var vm = new HomeViewModel
+            {
+                NewProducts = newest,
+                Featured = newest.FirstOrDefault(),
+                Categories = await _db.Categories.AsNoTracking().OrderBy(c => c.Name).ToListAsync()
+            };
+            return View(vm);
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error() => View();
     }
 }

@@ -1,0 +1,26 @@
+@model CartViewModel
+<div class="cart">
+    <a href="#" id="header-cart-btn"><span class="cart_quantity">@Model.ItemCount</span> <i class="ti-bag"></i> Giỏ hàng @Model.Total.ToVnd()</a>
+    <!-- Cart List Area Start -->
+    <ul class="cart-list">
+        @foreach (var line in Model.Lines)
+        {
+            <li>
+                <a asp-controller="Shop" asp-action="Details" asp-route-id="@line.ProductId" class="image"><img src="@Url.Content(ViewHelpers.ImagePath(line.ImageUrl))" class="cart-thumb" alt="@line.Name"></a>
+                <div class="cart-item-desc">
+                    <h6><a asp-controller="Shop" asp-action="Details" asp-route-id="@line.ProductId">@line.Name</a></h6>
+                    <p>@line.Quantity x - <span class="price">@line.Price.ToVnd()</span></p>
+                </div>
+            </li>
+        }
+        @if (Model.IsEmpty)
+        {
+            <li><p class="text-center mb-0">Giỏ hàng đang trống</p></li>
+        }
+        <li class="total">
+            <span class="pull-right">Tổng: @Model.Total.ToVnd()</span>
+            <a asp-controller="Cart" asp-action="Index" class="btn btn-sm btn-cart">Giỏ hàng</a>
+            <a asp-controller="Checkout" asp-action="Index" class="btn btn-sm btn-checkout">Thanh toán</a>
+        </li>
+    </ul>
+</div>

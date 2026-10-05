@@ -1,0 +1,38 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Đăng nhập";
+    Layout = "_LoginLayout";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="login-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Đăng nhập quản trị</h3>
+                </div>
+                <div class="panel-body">
+                    <form asp-area="Admin" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" role="form">
+                        <fieldset>
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <input asp-for="Username" class="form-control" placeholder="Tên đăng nhập" autofocus />
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input asp-for="Password" class="form-control" placeholder="Mật khẩu" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input asp-for="RememberMe" /> Ghi nhớ đăng nhập
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-lg btn-success btn-block">Đăng nhập</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

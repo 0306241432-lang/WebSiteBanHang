@@ -1,0 +1,53 @@
+@{
+    ViewData["Title"] = "Grid";
+}
+
+<style>
+    .grid-demo [class*="col-"] { padding-top: 10px; padding-bottom: 10px; background-color: #eee; border: 1px solid #ddd; text-align: center; }
+</style>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Hệ thống lưới Bootstrap 12 cột</div>
+    <div class="panel-body grid-demo">
+
+        <h4>12 cột col-md-1</h4>
+        <div class="row">
+            @for (var i = 0; i < 12; i++)
+            {
+                <div class="col-md-1">.col-md-1</div>
+            }
+        </div>
+
+        <h4 style="margin-top:25px">col-md-8 + col-md-4</h4>
+        <div class="row">
+            <div class="col-md-8">.col-md-8</div>
+            <div class="col-md-4">.col-md-4</div>
+        </div>
+
+        <h4 style="margin-top:25px">3 cột bằng nhau (col-md-4)</h4>
+        <div class="row">
+            <div class="col-md-4">.col-md-4</div>
+            <div class="col-md-4">.col-md-4</div>
+            <div class="col-md-4">.col-md-4</div>
+        </div>
+
+        <h4 style="margin-top:25px">col-md-6 x 2</h4>
+        <div class="row">
+            <div class="col-md-6">.col-md-6</div>
+            <div class="col-md-6">.col-md-6</div>
+        </div>
+
+        <h4 style="margin-top:25px">Responsive: col-xs-6 col-sm-4 col-md-3</h4>
+        <div class="row">
+            @for (var i = 1; i <= 8; i++)
+            {
+                <div class="col-xs-6 col-sm-4 col-md-3">Ô @i</div>
+            }
+        </div>
+
+        <h4 style="margin-top:25px">Offset: col-md-4 col-md-offset-4</h4>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">.col-md-4 .col-md-offset-4</div>
+        </div>
+    </div>
+</div>

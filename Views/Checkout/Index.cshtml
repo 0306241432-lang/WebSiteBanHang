@@ -1,0 +1,71 @@
+@model CheckoutViewModel
+@{
+    ViewData["Title"] = "Đặt hàng";
+}
+
+<!-- ****** Checkout Area Start ****** -->
+<div class="checkout_area section_padding_100">
+    <div class="container">
+        <form asp-controller="Checkout" asp-action="Index" method="post">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class="checkout_details_area mt-50 clearfix">
+                        <div class="cart-page-heading">
+                            <h5>Thông tin giao hàng</h5>
+                            <p>Vui lòng điền đầy đủ thông tin bên dưới</p>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label asp-for="CustomerName">Họ tên <span>*</span></label>
+                                <input asp-for="CustomerName" class="form-control" />
+                                <span asp-validation-for="CustomerName" class="text-danger"></span>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label asp-for="Phone">Số điện thoại <span>*</span></label>
+                                <input asp-for="Phone" type="tel" class="form-control" placeholder="VD: 0912345678" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label asp-for="Address">Địa chỉ giao hàng <span>*</span></label>
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label asp-for="Note">Ghi chú</label>
+                                <textarea asp-for="Note" class="form-control" rows="4" placeholder="Ghi chú thêm cho đơn hàng (không bắt buộc)"></textarea>
+                                <span asp-validation-for="Note" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-5 ml-lg-auto">
+                    <div class="order-details-confirmation">
+                        <div class="cart-page-heading">
+                            <h5>Đơn hàng của bạn</h5>
+                            <p>Chi tiết</p>
+                        </div>
+
+                        <ul class="order-details-form mb-4">
+                            <li><span>Sản phẩm</span> <span>Thành tiền</span></li>
+                            @foreach (var line in Model.Cart.Lines)
+                            {
+                                <li><span>@line.Name × @line.Quantity</span> <span>@line.LineTotal.ToVnd()</span></li>
+                            }
+                            <li><span>Tạm tính</span> <span>@Model.Cart.Total.ToVnd()</span></li>
+                            <li><span>Phí vận chuyển</span> <span>Miễn phí</span></li>
+                            <li><span>Tổng cộng</span> <span>@Model.Cart.Total.ToVnd()</span></li>
+                        </ul>
+
+                        <p class="mb-4"><i class="fa fa-circle mr-2"></i>Thanh toán khi nhận hàng (COD)</p>
+
+                        <button type="submit" class="btn karl-checkout-btn">Đặt hàng</button>
+                        <a asp-controller="Cart" asp-action="Index" class="d-block text-center mt-3">&laquo; Quay lại giỏ hàng</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- ****** Checkout Area End ****** -->

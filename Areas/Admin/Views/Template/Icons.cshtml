@@ -1,0 +1,53 @@
+@{
+    ViewData["Title"] = "Icons";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Font Awesome 4.7 - <span id="icon-count">0</span> biểu tượng (cách dùng: <code>&lt;i class="fa fa-tags"&gt;&lt;/i&gt;</code>)
+    </div>
+    <div class="panel-body">
+        <div class="form-group">
+            <input type="text" id="icon-search" class="form-control" placeholder="Tìm biểu tượng, ví dụ: cart, user, tag..." />
+        </div>
+        <div class="row" id="icon-list"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            // Đọc tên các biểu tượng trực tiếp từ file font-awesome.min.css đã nạp
+            var names = [];
+            for (var i = 0; i < document.styleSheets.length; i++) {
+                var sheet = document.styleSheets[i];
+                if (!sheet.href || sheet.href.indexOf('font-awesome') < 0) continue;
+                var rules;
+                try { rules = sheet.cssRules; } catch (e) { continue; }
+                for (var j = 0; j < rules.length; j++) {
+                    var sel = rules[j].selectorText;
+                    if (!sel) continue;
+                    sel.split(',').forEach(function (part) {
+                        var m = /^\.fa-([a-z0-9\-]+):before$/.exec(part.trim());
+                        if (m && names.indexOf(m[1]) < 0) names.push(m[1]);
+                    });
+                }
+            }
+            names.sort();
+            $('#icon-count').text(names.length);
+
+            var html = names.map(function (n) {
+                return '<div class="col-md-3 col-sm-4 col-xs-6 icon-item" data-name="' + n + '" style="padding:6px 15px;">' +
+                       '<i class="fa fa-' + n + ' fa-fw" aria-hidden="true"></i> fa-' + n + '</div>';
+            }).join('');
+            $('#icon-list').html(html);
+
+            $('#icon-search').on('input', function () {
+                var q = $(this).val().toLowerCase();
+                $('.icon-item').each(function () {
+                    $(this).toggle($(this).data('name').indexOf(q) >= 0);
+                });
+            });
+        });
+    </script>
+}

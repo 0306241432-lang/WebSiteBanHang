@@ -1,0 +1,67 @@
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+}
+<header class="header_area">
+    <!-- Top Header Area Start -->
+    <div class="top_header_area">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center justify-content-end">
+                <div class="col-12 col-lg-7">
+                    <div class="top_single_area d-flex align-items-center">
+                        <!-- Logo Area -->
+                        <div class="top_logo">
+                            <a asp-controller="Home" asp-action="Index"><img src="~/client/img/core-img/logo.png" alt="Karl Shop"></a>
+                        </div>
+                        <!-- Cart & Menu Area -->
+                        <div class="header-cart-menu d-flex align-items-center ml-auto">
+                            @await Component.InvokeAsync("CartSummary")
+                            <div class="header-right-side-menu ml-15">
+                                <a href="#" id="sideMenuBtn"><i class="ti-menu" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Top Header Area End -->
+
+    <div class="main_header_area">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-12 d-md-flex justify-content-between align-items-center">
+                    <!-- Header Social Area -->
+                    <div class="header-social-area d-flex align-items-center" style="padding-top: 15px;">
+                        <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                        <!-- Icon Facebook kèm badge Chia sẻ đã nâng cao không đè icon -->
+                        <a href="#" style="position: relative; display: inline-flex; align-items: center; justify-content: center; margin: 0 10px; overflow: visible;">
+                            <span class="karl-level" style="position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 4px; font-size: 8px; padding: 2px 4px; line-height: 1; height: auto; width: auto; white-space: nowrap;">Chia sẻ</span>
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                        <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                        <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                    </div>
+                    <!-- Menu Area -->
+                    <div class="main-menu-area">
+                        <nav class="navbar navbar-expand-lg align-items-start">
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#karl-navbar" aria-controls="karl-navbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><i class="ti-menu"></i></span></button>
+
+                            <div class="collapse navbar-collapse align-items-start" id="karl-navbar">
+                                <ul class="navbar-nav animated" id="nav">
+                                    <li class="nav-item @(controller == "Home" ? "active" : "")"><a class="nav-link" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                                    <li class="nav-item @(controller == "Shop" ? "active" : "")"><a class="nav-link" asp-controller="Shop" asp-action="Index">Sản phẩm</a></li>
+                                    <li class="nav-item @(controller == "Cart" ? "active" : "")"><a class="nav-link" asp-controller="Cart" asp-action="Index">Giỏ hàng</a></li>
+                                    <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Quản trị</a></li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                    <!-- Help Line -->
+                    <div class="help-line">
+                        <a href="tel:+84900000000"><i class="ti-headphone-alt"></i> 0900 000 000</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

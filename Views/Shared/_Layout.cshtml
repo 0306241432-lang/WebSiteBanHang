@@ -1,50 +1,89 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="vi">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WebBanHang</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/WebBanHang.styles.css" asp-append-version="true" />
+    <meta charset="UTF-8">
+    <meta name="description" content="Karl Shop - Website giới thiệu sản phẩm và đặt hàng">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>@ViewData["Title"] - Karl Shop</title>
+
+    <link rel="icon" href="~/client/img/core-img/favicon.ico">
+
+    <!-- Core Style CSS: da import san bootstrap, font-awesome, themify, owl, animate -->
+    <link rel="stylesheet" href="~/client/css/core-style.css">
+    <link rel="stylesheet" href="~/client/style.css">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="~/client/css/responsive.css">
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WebBanHang</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+    <!-- Side menu: danh muc san pham -->
+    <div class="catagories-side-menu">
+        <div id="sideMenuClose">
+            <i class="ti-close"></i>
+        </div>
+        <div class="nav-side-menu">
+            <div class="menu-list">
+                <h6>Danh mục</h6>
+                @await Component.InvokeAsync("CategoryMenu", new { menuId = "menu-content" })
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - WebBanHang - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <div id="wrapper">
+
+        <partial name="_Header" />
+
+        <section class="top-discount-area d-md-flex align-items-center">
+            <div class="single-discount-area">
+                <h5>Miễn phí vận chuyển &amp; đổi trả</h5>
+                <h6><a asp-controller="Shop" asp-action="Index">MUA NGAY</a></h6>
+            </div>
+            <div class="single-discount-area">
+                <h5>Thanh toán khi nhận hàng (COD)</h5>
+                <h6>AN TÂM MUA SẮM</h6>
+            </div>
+            <div class="single-discount-area">
+                <h5>Hàng mới về mỗi tuần</h5>
+                <h6>THEO DÕI CỬA HÀNG</h6>
+            </div>
+        </section>
+
+        @if (TempData["Success"] != null || TempData["Error"] != null)
+        {
+            <div class="container mt-3">
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        @TempData["Success"]
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Đóng"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                }
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        @TempData["Error"]
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Đóng"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                }
+            </div>
+        }
+
+        @RenderBody()
+
+        <partial name="_Footer" />
+    </div>
+
+    <script src="~/client/js/jquery/jquery-2.2.4.min.js"></script>
+    <script src="~/client/js/popper.min.js"></script>
+    <script src="~/client/js/bootstrap.min.js"></script>
+    <script src="~/client/js/plugins.js"></script>
+    <script src="~/client/js/active.js"></script>
+    <!-- Validate phia client (can Internet; khong co Internet thi server van validate) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/client/js/site.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

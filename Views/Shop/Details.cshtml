@@ -1,0 +1,103 @@
+@model ProductDetailsViewModel
+@{
+    var p = Model.Product;
+    ViewData["Title"] = p.Name;
+    var imageUrl = Url.Content(ViewHelpers.ImagePath(p.ImageUrl));
+}
+
+<!-- Breadcumb Area Start -->
+<div class="breadcumb_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <ol class="breadcrumb d-flex align-items-center">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a asp-action="Index" asp-route-categoryId="@p.CategoryId">@p.Category.Name</a></li>
+                    <li class="breadcrumb-item active">@p.Name</li>
+                </ol>
+                <a asp-action="Index" asp-route-categoryId="@p.CategoryId" class="backToHome d-block"><i class="fa fa-angle-double-left"></i> Quay lại danh mục</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcumb Area End -->
+
+<!-- Single Product Details Area Start -->
+<section class="single_product_details_area section_padding_0_100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="single_product_thumb">
+                    <a class="gallery_img" href="@imageUrl">
+                        <img class="d-block w-100" src="@imageUrl" alt="@p.Name">
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="single_product_desc">
+                    <h4 class="title">@p.Name</h4>
+                    <h4 class="price">@p.Price.ToVnd()</h4>
+                    <p class="available">Danh mục: <span class="text-muted">@p.Category.Name</span></p>
+                    <p class="available">Tình trạng: <span class="text-muted">Còn hàng</span></p>
+
+                    <!-- Add to Cart Form -->
+                    <form asp-controller="Cart" asp-action="Add" method="post" class="cart clearfix mb-50 d-flex">
+                        <input type="hidden" name="productId" value="@p.Id" />
+                        <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                        <div class="quantity">
+                            <span class="qty-minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                            <input type="number" class="qty-text" step="1" min="1" max="99" name="quantity" value="1">
+                            <span class="qty-plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                        </div>
+                        <button type="submit" class="btn cart-submit d-block">Thêm vào giỏ</button>
+                    </form>
+
+                    <div id="accordion" role="tablist">
+                        <div class="card">
+                            <div class="card-header" role="tab" id="headingOne">
+                                <h6 class="mb-0">
+                                    <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Thông tin sản phẩm</a>
+                                </h6>
+                            </div>
+                            <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                                <div class="card-body">
+                                    @if (string.IsNullOrWhiteSpace(p.Description))
+                                    {
+                                        <p>Đang cập nhật mô tả sản phẩm.</p>
+                                    }
+                                    else
+                                    {
+                                        <p style="white-space: pre-line;">@p.Description</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Single Product Details Area End -->
+
+@if (Model.Related.Any())
+{
+    <section class="you_may_like_area clearfix pb-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section_heading text-center">
+                        <h2>Sản phẩm liên quan</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var r in Model.Related)
+                {
+                    <partial name="_ProductCard" model="r" />
+                }
+            </div>
+        </div>
+    </section>
+}

@@ -1,0 +1,42 @@
+@model Product
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<div class="form-group">
+    <label asp-for="Name" class="control-label"></label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="CategoryId" class="control-label"></label>
+    <select asp-for="CategoryId" asp-items="(SelectList)ViewBag.Categories" class="form-control">
+        <option value="0">-- Chọn danh mục --</option>
+    </select>
+    <span asp-validation-for="CategoryId" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Price" class="control-label"></label>
+    <input asp-for="Price" type="number" step="1" min="0" class="form-control" />
+    <span asp-validation-for="Price" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Description" class="control-label"></label>
+    <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+    <span asp-validation-for="Description" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label class="control-label">Hình ảnh</label>
+    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <div style="margin-bottom:8px">
+            <img src="@Url.Content(ViewHelpers.ImagePath(Model.ImageUrl))" class="preview-img" alt="@Model.Name" />
+            <p class="help-block">Ảnh hiện tại. Chọn file mới nếu muốn thay đổi.</p>
+        </div>
+    }
+    <input type="file" name="imageFile" id="imageFile" accept=".jpg,.jpeg,.png,.gif,.webp" class="form-control" />
+    @Html.ValidationMessage("imageFile", new { @class = "text-danger" })
+    <p class="help-block">Chấp nhận .jpg, .jpeg, .png, .gif, .webp - tối đa 5 MB. File được lưu vào thư mục wwwroot/images.</p>
+</div>

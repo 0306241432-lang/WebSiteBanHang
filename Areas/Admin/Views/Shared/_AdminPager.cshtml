@@ -1,0 +1,28 @@
+@using Microsoft.AspNetCore.Http
+@model IPagedList
+@{
+    string PageUrl(int p)
+    {
+        var query = Context.Request.Query
+            .Where(kv => !string.Equals(kv.Key, "page", StringComparison.OrdinalIgnoreCase))
+            .ToDictionary(kv => kv.Key, kv => kv.Value.ToString());
+        query["page"] = p.ToString();
+        return Context.Request.Path.Value + QueryString.Create(query).ToUriComponent();
+    }
+    var start = Math.Max(1, Model.Page - 2);
+    var end = Math.Min(Model.TotalPages, Model.Page + 2);
+}
+<div class="text-center">
+    <p class="text-muted">Tổng cộng @Model.TotalItems bản ghi - trang @Model.Page/@Model.TotalPages</p>
+    @if (Model.TotalPages > 1)
+    {
+        <ul class="pagination" style="margin-top:0">
+            <li class="@(Model.Page == 1 ? "disabled" : "")"><a href="@PageUrl(Model.Page - 1)">&laquo;</a></li>
+            @for (var i = start; i <= end; i++)
+            {
+                <li class="@(i == Model.Page ? "active" : "")"><a href="@PageUrl(i)">@i</a></li>
+            }
+            <li class="@(Model.Page == Model.TotalPages ? "disabled" : "")"><a href="@PageUrl(Model.Page + 1)">&raquo;</a></li>
+        </ul>
+    }
+</div>

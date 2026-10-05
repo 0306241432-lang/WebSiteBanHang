@@ -1,0 +1,165 @@
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"] - Quản trị Karl Shop</title>
+
+    <link href="~/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/admin/css/metisMenu.min.css" rel="stylesheet">
+    <link href="~/admin/css/timeline.css" rel="stylesheet">
+    <link href="~/admin/css/startmin.css" rel="stylesheet">
+    <link href="~/admin/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    @await RenderSectionAsync("Styles", required: false)
+    <style>
+        .thumb-sm { width: 50px; height: 60px; object-fit: cover; border-radius: 3px; }
+        .table > tbody > tr > td { vertical-align: middle; }
+        .preview-img { max-width: 180px; max-height: 220px; border: 1px solid #ddd; padding: 3px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Karl Shop - Quản trị</a>
+            </div>
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <ul class="nav navbar-nav navbar-left navbar-top-links">
+                <li><a asp-area="" asp-controller="Home" asp-action="Index" target="_blank"><i class="fa fa-home fa-fw"></i> Xem website</a></li>
+            </ul>
+
+            <ul class="nav navbar-right navbar-top-links">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> @User.Identity.Name <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li>
+                            <a href="#" onclick="document.getElementById('logoutForm').submit(); return false;"><i class="fa fa-sign-out fa-fw"></i> Đăng xuất</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <form id="logoutForm" asp-area="Admin" asp-controller="Account" asp-action="Logout" method="post" style="display:none"></form>
+        </nav>
+
+        <aside class="sidebar navbar-default" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    <!-- Chức năng quản lý của dự án -->
+                    <li>
+                        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="@(controller == "Dashboard" ? "active" : "")"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="@(controller == "Products" ? "active" : "")"><i class="fa fa-tags fa-fw"></i> Sản phẩm</a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Categories" asp-action="Index" class="@(controller == "Categories" ? "active" : "")"><i class="fa fa-sitemap fa-fw"></i> Danh mục</a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Orders" asp-action="Index" class="@(controller == "Orders" ? "active" : "")"><i class="fa fa-shopping-cart fa-fw"></i> Đơn hàng</a>
+                    </li>
+
+                    <!-- Các trang của template Startmin -->
+                    <li>
+                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a asp-area="Admin" asp-controller="Statistics" asp-action="Index">Thống kê doanh thu</a></li>
+                            <li><a asp-area="Admin" asp-controller="Template" asp-action="Flot">Flot Charts (mẫu)</a></li>
+                            <li><a asp-area="Admin" asp-controller="Template" asp-action="Morris">Morris.js Charts (mẫu)</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Template" asp-action="Tables"><i class="fa fa-table fa-fw"></i> Tables</a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Template" asp-action="Forms"><i class="fa fa-edit fa-fw"></i> Forms</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a asp-area="Admin" asp-controller="Template" asp-action="Panels">Panels and Wells</a></li>
+                            <li><a asp-area="Admin" asp-controller="Template" asp-action="Buttons">Buttons</a></li>
+                            <li><a asp-area="Admin" asp-controller="Template" asp-action="Notifications">Notifications</a></li>
+                            <li><a asp-area="Admin" asp-controller="Template" asp-action="Typography">Typography</a></li>
+                            <li><a asp-area="Admin" asp-controller="Template" asp-action="Icons">Icons</a></li>
+                            <li><a asp-area="Admin" asp-controller="Template" asp-action="Grid">Grid</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="#">Second Level Item</a></li>
+                            <li><a href="#">Second Level Item</a></li>
+                            <li>
+                                <a href="#">Third Level <span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    <li><a href="#">Third Level Item</a></li>
+                                    <li><a href="#">Third Level Item</a></li>
+                                    <li><a href="#">Third Level Item</a></li>
+                                    <li><a href="#">Third Level Item</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a asp-area="Admin" asp-controller="Template" asp-action="Blank">Blank Page</a></li>
+                            <li><a asp-area="Admin" asp-controller="Template" asp-action="LoginDemo">Login Page</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">@ViewData["Title"]</h1>
+                    </div>
+                </div>
+
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        @TempData["Success"]
+                    </div>
+                }
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        @TempData["Error"]
+                    </div>
+                }
+
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <script src="~/admin/js/jquery.min.js"></script>
+    <script src="~/admin/js/bootstrap.min.js"></script>
+    <script src="~/admin/js/metisMenu.min.js"></script>
+    <script src="~/admin/js/startmin.js"></script>
+    <!-- Validate phia client (can Internet; khong co Internet thi server van validate) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
